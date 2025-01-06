@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchAllOptions } from "../ProductApi";
+import { fetchAllOptions } from "../ProductsApi";
 
 export const useOptions = () => {
   const [options, setOptions] = useState<Record<string, any> | null>(null);

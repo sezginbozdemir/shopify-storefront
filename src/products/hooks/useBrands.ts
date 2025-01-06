@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { fetchAllBrands } from "../ProductApi";
+import { fetchAllBrands } from "../ProductsApi";
 
 export const useBrands = () => {
   const [brands, setBrands] = useState<string[]>([]);

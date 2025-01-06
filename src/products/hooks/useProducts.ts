@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { fetchProducts } from "../ProductApi";
+import { fetchProducts } from "../ProductsApi";
 import { Product } from "../types";
 
 export const useProducts = (filters: string) => {

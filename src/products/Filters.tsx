@@ -1,21 +1,50 @@
 import { useState, useEffect } from "react";
 import ReactSlider from "react-slider";
-import { ProductFiltersProps } from "./types";
+import { Product } from "./types";
 import { useBrands } from "./hooks/useBrands";
 import { useOptions } from "./hooks/useOptions";
-import "./products.css";
+import { useProducts } from "./hooks/useProducts";
+import "./styles.css";
 
-function ProductFilters({
-  filtersVisible,
-  onFiltersChange,
-  selectedOptions,
-  setSelectedOptions,
-}: ProductFiltersProps) {
+export interface FiltersProps {
+  filtersVisible: boolean;
+  setFilteredProducts: any;
+}
+
+function Filters({ filtersVisible, setFilteredProducts }: FiltersProps) {
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const [priceRange, setPriceRange] = useState([0, 500]);
+  const [filters, setFilters] = useState<string>("");
 
+  const [selectedOptions, setSelectedOptions] = useState<
+    Record<string, string[]>
+  >({});
   const { brands } = useBrands();
   const { options } = useOptions();
+
+  const { products } = useProducts(filters);
+
+  const filterProducts = (products: Product[]) => {
+    return products.filter((product) => {
+      return Object.entries(selectedOptions).every(
+        ([filterKey, filterValues]) => {
+          if (filterValues.length === 0) return true;
+
+          const matchingOption = product.options?.find(
+            (option) => option.name === filterKey
+          );
+
+          return matchingOption?.values?.some((value: string) =>
+            filterValues.includes(value)
+          );
+        }
+      );
+    });
+  };
+
+  useEffect(() => {
+    setFilteredProducts(filterProducts(products));
+  }, [products, selectedOptions]);
 
   useEffect(() => {
     const brandFilter =
@@ -28,8 +57,8 @@ function ProductFilters({
       : "";
 
     const filters = [brandFilter, priceFilter].filter(Boolean).join(" AND ");
-    onFiltersChange(filters);
-  }, [selectedBrands, priceRange, selectedOptions, onFiltersChange]);
+    setFilters(filters);
+  }, [selectedBrands, priceRange, selectedOptions]);
 
   const handleBrandChange = (brand: string) => {
     setSelectedBrands((prevSelectedBrands) => {
@@ -65,8 +94,6 @@ function ProductFilters({
       };
     });
   };
-
-  console.log(selectedOptions);
 
   return (
     <div
@@ -137,4 +164,4 @@ function ProductFilters({
   );
 }
 
-export default ProductFilters;
+export default Filters;

@@ -1,4 +1,4 @@
-import ProductComponent from "./products/ProductComponent";
+import Products from "./products/Products";
 import CustomerRegister from "./customers/CustomerRegister";
 import CustomerLogin from "./customers/CustomerLogin";
 import "./App.css";
@@ -6,7 +6,7 @@ import "./App.css";
 function App() {
   return (
     <div>
-      <ProductComponent />
+      <Products />
     </div>
   );
 }

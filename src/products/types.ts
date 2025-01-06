@@ -46,12 +46,3 @@ export interface Product {
     edges: VariantEdge[];
   };
 }
-
-export interface ProductFiltersProps {
-  filtersVisible: boolean;
-  onFiltersChange: (filters: string) => void;
-  selectedOptions: Record<string, string[]>;
-  setSelectedOptions: React.Dispatch<
-    React.SetStateAction<Record<string, string[]>>
-  >;
-}
