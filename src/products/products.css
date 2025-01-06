@@ -1,0 +1,258 @@
+.options {
+  max-height: 12rem;
+  overflow: scroll;
+}
+
+.brands {
+  max-height: 12rem;
+  overflow: scroll;
+}
+.price-range {
+  margin: 1rem auto;
+  padding-right: 15px;
+}
+
+.slider {
+  width: 100%;
+  height: 5px;
+  background-color: #ccc;
+  border-radius: 5px;
+  margin: 1rem 0;
+}
+.thumb::after {
+  content: attr(aria-valuenow);
+  position: absolute;
+  top: -30px;
+  transform: translateX(-90%);
+  font-size: 14px;
+  color: #333;
+  background: #fff;
+  padding: 2px 5px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.thumb {
+  background-color: #ccc;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  position: relative;
+  top: -5px;
+  cursor: pointer;
+}
+
+.track {
+  background-color: #074f4f;
+}
+
+.price-values {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1rem;
+  color: #333;
+  font-weight: bold;
+}
+
+.brand-filter {
+  margin-bottom: 20px;
+}
+
+.brand-header {
+  font-size: 1.1rem;
+  color: #074f4f;
+  margin-bottom: 3rem;
+  font-weight: bold;
+}
+
+.brand-checkbox {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.brand-checkbox label {
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  color: #555;
+  cursor: pointer;
+}
+
+.brand-checkbox input[type="checkbox"] {
+  margin-right: 10px;
+  accent-color: #074f4f;
+  width: 18px;
+  height: 18px;
+}
+.products-topbar {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 2px solid #ddd;
+  border-top: 2px solid #ddd;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  margin-top: 1rem;
+  margin-left: 2rem;
+  margin-right: 2rem;
+}
+
+.filter-button {
+  margin-right: 2rem;
+}
+.main-container {
+  display: flex;
+  width: 100%;
+}
+
+.filters-container {
+  display: none;
+  width: 20%;
+}
+
+.filters-visible {
+  display: block;
+}
+.grid-container {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.grid-with-filters {
+  width: 80%;
+}
+
+.products-container {
+  padding: 2rem;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.status-message {
+  text-align: center;
+  font-size: 1.2rem;
+  margin: 20px 0;
+  width: 100%;
+  height: 100vh;
+}
+
+.status-message.loading {
+  color: #007bff;
+}
+
+.status-message.error {
+  color: #dc3545;
+}
+
+.status-message.empty {
+  color: #6c757d;
+}
+
+.product-card {
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background-color: #fff;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.image-container {
+  width: 100%;
+  height: 0;
+  padding-top: 75%;
+  position: relative;
+}
+
+.product-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.product-details {
+  padding: 15px;
+}
+
+.product-title {
+  font-size: 0.9rem;
+  margin-top: 0.3rem;
+  padding-bottom: 0.5rem;
+  color: #333;
+  border-bottom: 1px solid #555;
+}
+
+.product-price {
+  font-size: 0.9rem;
+  margin-top: 0.3rem;
+  padding-bottom: 0.5rem;
+  color: #333;
+  border-bottom: 1px solid #555;
+}
+.product-inventory {
+  font-size: 0.9rem;
+  margin-top: 0.3rem;
+  color: #333;
+}
+
+.product-vendor {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.product-collections {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.collections-tags {
+  margin-top: 5px;
+}
+
+.collection-tag {
+  display: inline-block;
+  background-color: #f1f1f1;
+  color: #333;
+  padding: 5px 10px;
+  margin: 3px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+}
+
+@media (max-width: 768px) {
+  .product-title {
+    font-size: 1rem;
+  }
+
+  .product-vendor,
+  .product-collections {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-card {
+    border: none;
+    box-shadow: none;
+  }
+
+  .product-card:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .collection-tag {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+  }
+}

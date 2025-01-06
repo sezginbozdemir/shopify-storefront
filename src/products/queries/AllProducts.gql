@@ -1,0 +1,50 @@
+query AllProducts($first: Int!, $filters: String, $after: String) {
+  products(first: $first, query: $filters, after: $after) {
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+
+    edges {
+      node {
+        id
+        title
+        vendor
+        totalInventory
+        options {
+          name
+          values
+        }
+        variants(first: 1) {
+          edges {
+            node {
+              price {
+                amount
+                currencyCode
+              }
+              priceV2 {
+                amount
+                currencyCode
+              }
+            }
+          }
+        }
+        images(first: 2) {
+          edges {
+            node {
+              src
+              url
+            }
+          }
+        }
+        collections(first: 2) {
+          edges {
+            node {
+              title
+            }
+          }
+        }
+      }
+    }
+  }
+}
