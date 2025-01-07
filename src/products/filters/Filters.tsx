@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import ReactSlider from "react-slider";
 import { useBrands } from "../hooks/useBrands";
-import { useOptions } from "../hooks/useOptions";
 import { useProducts } from "../hooks/useProducts";
 import filterProducts from "./filterProducts";
 import "./filters.css";
 import { apiFormatter } from "./apiFormatter";
+import getOptions from "./getOptions";
 
 export interface FiltersProps {
   filtersVisible: boolean;
@@ -18,13 +18,11 @@ function Filters({ filtersVisible, setFilteredProducts }: FiltersProps) {
   const [filters, setFilters] = useState<string>("");
   const [isFiltered, setIsFiltered] = useState<boolean>(false);
   const [isDiscount, setIsDiscount] = useState<boolean>(false);
-
+  const [options, setOptions] = useState<Record<string, string[]>>({});
   const [selectedOptions, setSelectedOptions] = useState<
     Record<string, string[]>
   >({});
   const { brands } = useBrands();
-  const { options } = useOptions();
-
   const { products } = useProducts(filters);
 
   useEffect(() => {
@@ -36,6 +34,10 @@ function Filters({ filtersVisible, setFilteredProducts }: FiltersProps) {
   useEffect(() => {
     setFilters(apiFormatter(priceRange, selectedBrands));
   }, [selectedBrands, priceRange, selectedOptions]);
+
+  useEffect(() => {
+    setOptions(getOptions(products));
+  }, [products]);
 
   const handleBrandChange = (brand: string) => {
     setSelectedBrands((prevSelectedBrands) => {
