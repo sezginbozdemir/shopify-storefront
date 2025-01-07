@@ -11,24 +11,26 @@ query AllProducts($first: Int!, $filters: String, $after: String) {
         title
         vendor
         totalInventory
+        availableForSale
         options {
           name
           values
         }
-        variants(first: 1) {
+        variants(first: 50) {
           edges {
             node {
               price {
                 amount
                 currencyCode
               }
-              priceV2 {
+              compareAtPrice {
                 amount
                 currencyCode
               }
             }
           }
         }
+
         images(first: 2) {
           edges {
             node {

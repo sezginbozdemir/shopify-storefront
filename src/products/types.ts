@@ -1,4 +1,4 @@
-export interface ImagesEdge {
+interface ImagesEdge {
   node: {
     alt: string;
     url: string;
@@ -6,27 +6,27 @@ export interface ImagesEdge {
   };
 }
 
-export interface CollectionEdge {
+interface CollectionEdge {
   node: {
     title: string;
     id: string;
   };
 }
 
-export interface OptionsEdge {
+interface OptionsEdge {
   name: string;
   values: string[];
 }
 
-export interface VariantPrice {
+interface VariantPrice {
   amount: string;
   currencyCode: string;
 }
 
-export interface VariantEdge {
+interface VariantEdge {
   node: {
     price: VariantPrice;
-    priceV2: VariantPrice;
+    compareAtPrice: VariantPrice;
   };
 }
 
@@ -35,6 +35,7 @@ export interface Product {
   title: string;
   vendor: string;
   totalInventory: number;
+  availableForSale: boolean;
   options: OptionsEdge[];
   images: {
     edges: ImagesEdge[];
@@ -44,5 +45,9 @@ export interface Product {
   };
   variants: {
     edges: VariantEdge[];
+  };
+  category: {
+    id: string;
+    name: string;
   };
 }

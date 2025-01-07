@@ -9,7 +9,7 @@ export const getStorefrontApiClient = (): StorefrontApiClient => {
   if (storefrontAppClient === undefined) {
     storefrontAppClient = createStorefrontApiClient({
       storeDomain: import.meta.env.VITE_SHOPIFY_STORE_DOMAIN!,
-      apiVersion: "2024-04",
+      apiVersion: "2025-01",
       publicAccessToken: import.meta.env.VITE_SHOPIFY_STOREFRONT_ACCESS_TOKEN!,
     });
   }

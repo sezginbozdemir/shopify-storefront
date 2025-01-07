@@ -1,8 +1,8 @@
 import { useState } from "react";
 import ReactPaginate from "react-paginate";
-import ProductFilters from "./Filters";
-import Header from "./Header";
-import Product from "./Product";
+import ProductFilters from "./filters/Filters";
+import Header from "./header/Header";
+import Product from "./product/Product";
 import "./styles.css";
 import { Product as ProductType } from "./types";
 
@@ -20,7 +20,7 @@ function Products() {
   const handlePageClick = (data: { selected: number }) => {
     setCurrentPage(data.selected);
   };
-
+  console.log(filteredProducts);
   const startIndex = currentPage * productsPerPage;
   const currentProducts = filteredProducts.slice(
     startIndex,

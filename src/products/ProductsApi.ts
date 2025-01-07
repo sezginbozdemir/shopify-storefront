@@ -12,7 +12,7 @@ export const fetchProducts = async (filters?: string): Promise<Product[]> => {
 
   try {
     while (hasNextPage) {
-      const variables: any = { first: 50, filters };
+      const variables: any = { first: 250, filters };
       if (endCursor) variables.after = endCursor;
 
       const response = await client.request(AllProducts.loc.source.body, {
@@ -40,7 +40,7 @@ export const fetchAllBrands = async (): Promise<string[]> => {
 
   try {
     while (hasNextPage) {
-      const variables: any = { first: 50 };
+      const variables: any = { first: 250 };
       if (endCursor) variables.after = endCursor;
 
       const response = await client.request(AllVendors.loc.source.body, {
@@ -72,7 +72,7 @@ export const fetchAllOptions = async (): Promise<{
 
   try {
     while (hasNextPage) {
-      const variables: { first: number; after?: string } = { first: 50 };
+      const variables: { first: number; after?: string } = { first: 250 };
       if (endCursor) variables.after = endCursor;
 
       const response = await client.request(AllOptions.loc.source.body, {
