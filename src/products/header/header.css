@@ -1,0 +1,15 @@
+.products-topbar {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 2px solid #ddd;
+  border-top: 2px solid #ddd;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  margin-top: 1rem;
+  margin-left: 2rem;
+  margin-right: 2rem;
+}
+
+.filter-button {
+  margin-right: 2rem;
+}
