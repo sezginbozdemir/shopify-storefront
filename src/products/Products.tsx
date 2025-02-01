@@ -5,13 +5,18 @@ import Header from "./header/Header";
 import Product from "./product/Product";
 import "./styles.css";
 import { Product as ProductType } from "./types";
+interface ProductsProps {
+  setCartItems: React.Dispatch<
+    React.SetStateAction<Array<{ merchandiseId: string; quantity: number }>>
+  >;
+}
 
-const productsPerPage = 10;
-
-function Products() {
+function Products({ setCartItems }: ProductsProps) {
   const [filtersVisible, setFiltersVisible] = useState<boolean>(false);
   const [filteredProducts, setFilteredProducts] = useState<ProductType[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(0);
+
+  const productsPerPage = 10;
 
   const toggleFilters = () => {
     setFiltersVisible(!filtersVisible);
@@ -27,6 +32,11 @@ function Products() {
     startIndex + productsPerPage
   );
 
+  const updateFilteredProducts = (products: ProductType[]) => {
+    setFilteredProducts(products);
+    setCurrentPage(0);
+  };
+
   return (
     <>
       <Header toggleFilters={toggleFilters} />
@@ -35,7 +45,7 @@ function Products() {
         <div className="main-container">
           <ProductFilters
             filtersVisible={filtersVisible}
-            setFilteredProducts={setFilteredProducts}
+            setFilteredProducts={updateFilteredProducts}
           />
           {filteredProducts.length > 0 ? (
             <>
@@ -45,7 +55,11 @@ function Products() {
                 }`}
               >
                 {currentProducts.map((product) => (
-                  <Product key={product.id} product={product} />
+                  <Product
+                    key={product.id}
+                    setCartItems={setCartItems}
+                    product={product}
+                  />
                 ))}
               </div>
             </>

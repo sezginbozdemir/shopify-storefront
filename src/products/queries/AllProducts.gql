@@ -19,6 +19,7 @@ query AllProducts($first: Int!, $filters: String, $after: String) {
         variants(first: 50) {
           edges {
             node {
+              id
               price {
                 amount
                 currencyCode

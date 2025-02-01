@@ -1,0 +1,40 @@
+mutation cartCreate($input: CartInput!) {
+  cartCreate(input: $input) {
+    cart {
+      id
+      buyerIdentity {
+        customer {
+          id
+        }
+      }
+      lines(first: 250) {
+        edges {
+          node {
+            id
+            quantity
+            cost {
+              amountPerQuantity {
+                amount
+                currencyCode
+              }
+            }
+          }
+        }
+      }
+      cost {
+        totalAmount {
+          amount
+          currencyCode
+        }
+      }
+    }
+    userErrors {
+      field
+      message
+    }
+    warnings {
+      message
+      code
+    }
+  }
+}

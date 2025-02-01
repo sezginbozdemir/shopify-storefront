@@ -2,7 +2,6 @@ import { getStorefrontApiClient } from "../api/storefront";
 import { Product } from "./types";
 import AllProducts from "./queries/AllProducts.gql";
 import AllVendors from "./queries/AllVendors.gql";
-import AllOptions from "./queries/AllOptions.gql";
 const client = getStorefrontApiClient();
 
 export const fetchProducts = async (filters?: string): Promise<Product[]> => {

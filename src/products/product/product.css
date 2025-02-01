@@ -47,6 +47,26 @@
   color: #333;
   border-bottom: 1px solid #555;
 }
+
+.product-compare-price {
+  text-decoration: line-through;
+  color: #888;
+  margin-left: 10px;
+}
+
+.sale-tag {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: #ff6347;
+  color: #fff;
+  padding: 5px 10px;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 5px;
+  z-index: 1000;
+}
+
 .product-inventory {
   font-size: 0.9rem;
   margin-top: 0.3rem;

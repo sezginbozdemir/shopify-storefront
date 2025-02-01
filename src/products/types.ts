@@ -25,6 +25,7 @@ interface VariantPrice {
 
 interface VariantEdge {
   node: {
+    id: string;
     price: VariantPrice;
     compareAtPrice: VariantPrice;
   };

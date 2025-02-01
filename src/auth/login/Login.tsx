@@ -1,8 +1,12 @@
 import React, { useState } from "react";
-import { createAccessToken } from "../CustomerApi.ts";
+import { createAccessToken, getCustomerInfo } from "../CustomerApi.ts";
 import { AccessTokenFormData } from "../types";
 
-const Login: React.FC = () => {
+interface LoginPros {
+  setCustomerAccesToken: (token: string) => void;
+}
+
+const Login: React.FC<LoginPros> = ({ setCustomerAccesToken }) => {
   const [formData, setFormData] = useState<AccessTokenFormData>({
     email: "",
     password: "",
@@ -27,9 +31,12 @@ const Login: React.FC = () => {
 
     try {
       const response = await createAccessToken(formData);
-      setAccessToken(
-        response.customerAccessTokenCreate.customerAccessToken.accessToken
-      );
+      const token =
+        response.customerAccessTokenCreate.customerAccessToken.accessToken;
+      const customerInfo = await getCustomerInfo(token);
+      console.log(customerInfo);
+      setAccessToken(token);
+      setCustomerAccesToken(token);
     } catch (error) {
       setErrorMessage("Failed to create access token. Please try again.");
       console.error(error);
