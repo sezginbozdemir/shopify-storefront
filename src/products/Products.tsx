@@ -5,13 +5,12 @@ import Header from "./header/Header";
 import Product from "./product/Product";
 import "./styles.css";
 import { Product as ProductType } from "./types";
-interface ProductsProps {
-  setCartItems: React.Dispatch<
-    React.SetStateAction<Array<{ merchandiseId: string; quantity: number }>>
-  >;
+
+interface ProductProps {
+  setCart: React.Dispatch<React.SetStateAction<any>>;
 }
 
-function Products({ setCartItems }: ProductsProps) {
+const Products: React.FC<ProductProps> = ({ setCart }) => {
   const [filtersVisible, setFiltersVisible] = useState<boolean>(false);
   const [filteredProducts, setFilteredProducts] = useState<ProductType[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(0);
@@ -56,8 +55,8 @@ function Products({ setCartItems }: ProductsProps) {
               >
                 {currentProducts.map((product) => (
                   <Product
+                    setCart={setCart}
                     key={product.id}
-                    setCartItems={setCartItems}
                     product={product}
                   />
                 ))}
@@ -81,6 +80,6 @@ function Products({ setCartItems }: ProductsProps) {
       </div>
     </>
   );
-}
+};
 
 export default Products;

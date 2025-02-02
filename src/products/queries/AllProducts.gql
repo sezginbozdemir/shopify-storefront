@@ -16,10 +16,17 @@ query AllProducts($first: Int!, $filters: String, $after: String) {
           name
           values
         }
-        variants(first: 50) {
+        variants(first: 250) {
           edges {
             node {
+              image {
+                src
+                url
+              }
+
               id
+              quantityAvailable
+              title
               price {
                 amount
                 currencyCode
@@ -32,7 +39,7 @@ query AllProducts($first: Int!, $filters: String, $after: String) {
           }
         }
 
-        images(first: 2) {
+        images(first: 10) {
           edges {
             node {
               src

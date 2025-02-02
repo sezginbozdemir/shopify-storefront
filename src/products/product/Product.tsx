@@ -1,29 +1,47 @@
 import React from "react";
 import "./product.css";
 import { Product as ProductType } from "../types";
+import CartLinesAdd from "../../cart/queries/CartLinesAdd.gql";
+import { getStorefrontApiClient } from "../../api/storefront";
 
 interface ProductProps {
   product: ProductType;
-  setCartItems: React.Dispatch<
-    React.SetStateAction<Array<{ merchandiseId: string; quantity: number }>>
-  >;
+  setCart: React.Dispatch<React.SetStateAction<any>>;
 }
 
-const Product: React.FC<ProductProps> = ({ product, setCartItems }) => {
-  const handleAddToCart = () => {
-    setCartItems((prevCartItems) => {
-      const itemIndex = prevCartItems.findIndex(
-        (item) => item.merchandiseId === variant.id
-      );
+const Product: React.FC<ProductProps> = ({ product, setCart }) => {
+  const client = getStorefrontApiClient();
+  const handleAddToCart = async () => {
+    if (!variant || product.totalInventory <= 0) return;
 
-      if (itemIndex !== -1) {
-        const updatedCartItems = [...prevCartItems];
-        updatedCartItems[itemIndex].quantity += 1;
-        return updatedCartItems;
+    try {
+      const cartId = localStorage.getItem("cartId");
+      if (!cartId) {
+        return;
       }
 
-      return [...prevCartItems, { merchandiseId: variant.id, quantity: 1 }];
-    });
+      const response = await client.request(CartLinesAdd.loc.source.body, {
+        variables: {
+          cartId,
+          lines: [
+            {
+              merchandiseId: variant.id,
+              quantity: 1,
+              attributes: [
+                {
+                  key: "title",
+                  value: product.title,
+                },
+              ],
+            },
+          ],
+        },
+      });
+      console.log("Cart response after adding item:", response.data);
+      setCart(response.data.cartLinesAdd.cart);
+    } catch (error) {
+      console.error("Error adding item to cart:", error);
+    }
   };
   const { edges: variantEdges } = product.variants;
   const variant = variantEdges[0]?.node;

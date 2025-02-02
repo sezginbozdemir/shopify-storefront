@@ -1,54 +1,86 @@
 import { useEffect, useState } from "react";
 import { getStorefrontApiClient } from "../api/storefront";
-import { Cart } from "@shopify/hydrogen-react/storefront-api-types";
 import CartCreate from "./queries/CartCreate.gql";
-
-import { CartLineInput } from "@shopify/hydrogen-react/storefront-api-types";
+import RetrieveCart from "./queries/RetrieveCart.gql";
 
 interface CartProps {
   customerAccessToken: string;
-  cartItems?: CartLineInput[];
+  setCart: React.Dispatch<React.SetStateAction<any>>;
+  cart: any;
 }
 
 const CartComponent: React.FC<CartProps> = ({
+  cart,
+  setCart,
   customerAccessToken,
-  cartItems,
 }) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [cart, setCart] = useState<Cart | undefined>(undefined);
+
   const client = getStorefrontApiClient();
 
   useEffect(() => {
-    if (cartItems && cartItems.length > 0) {
-      client
-        .request(CartCreate.loc.source.body, {
-          variables: {
-            input: {
-              buyerIdentity: { customerAccessToken: customerAccessToken },
-              lines: cartItems,
+    const fetchCart = async () => {
+      try {
+        const cartId = localStorage.getItem("cartId");
+
+        if (cartId && !cart) {
+          const existingCart = await client.request(
+            RetrieveCart.loc.source.body,
+            {
+              variables: { id: cartId },
+            }
+          );
+
+          if (existingCart.data.cart) {
+            setCart(existingCart.data.cart);
+          }
+          return;
+        }
+
+        if (!cartId) {
+          const newCart = await client.request(CartCreate.loc.source.body, {
+            variables: {
+              input: {
+                buyerIdentity: { customerAccessToken },
+              },
             },
-          },
-        })
-        .then((response) => {
-          setCart(response.data?.cartCreate.cart);
-        })
-        .catch(console.error)
-        .finally(() => setIsLoading(false));
-    } else {
-      setIsLoading(false);
-    }
-  }, [cartItems]);
+          });
+
+          const newCartId = newCart.data?.cartCreate.cart?.id;
+          if (newCartId) {
+            localStorage.setItem("cartId", newCartId);
+            setCart(newCart.data?.cartCreate.cart);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching or creating the cart:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchCart();
+  }, [customerAccessToken]);
 
   return isLoading ? (
-    <div className="cart">Creating cart for customer...</div>
-  ) : cart ? (
+    <div className="cart">Creating or retrieving cart for customer...</div>
+  ) : cart && cart.lines.edges.length > 0 ? (
     <div id={cart.id} className="cart">
       <ol>
-        {cart.lines.edges.map(({ node }) => (
-          <li key={node.id}>
-            {`item name (${node.cost.amountPerQuantity.amount} ${node.cost.amountPerQuantity.currencyCode} x ${node.quantity})`}
-          </li>
-        ))}
+        {cart.lines.edges.map(({ node }) => {
+          const titleAttribute = node.attributes.find(
+            (attr) => attr.key === "title"
+          );
+          return (
+            <li key={node.id}>
+              {`${titleAttribute?.value || "Unnamed Item"} (${
+                node.cost.amountPerQuantity.amount
+              } ${node.cost.amountPerQuantity.currencyCode} x ${
+                node.quantity
+              })`}
+            </li>
+          );
+        })}
       </ol>
       <p className="cost">{`${cart.cost.totalAmount.amount} ${cart.cost.totalAmount.currencyCode}`}</p>
     </div>

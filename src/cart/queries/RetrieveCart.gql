@@ -1,0 +1,33 @@
+query RetrieveCart($id: ID!) {
+  cart(id: $id) {
+    id
+    attributes {
+      key
+      value
+    }
+    lines(first: 100) {
+      edges {
+        node {
+          id
+          quantity
+          attributes {
+            key
+            value
+          }
+          cost {
+            amountPerQuantity {
+              amount
+              currencyCode
+            }
+          }
+        }
+      }
+    }
+    cost {
+      totalAmount {
+        amount
+        currencyCode
+      }
+    }
+  }
+}
