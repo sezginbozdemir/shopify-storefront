@@ -6,11 +6,7 @@ import Product from "./product/Product";
 import "./styles.css";
 import { Product as ProductType } from "./types";
 
-interface ProductProps {
-  setCart: React.Dispatch<React.SetStateAction<any>>;
-}
-
-const Products: React.FC<ProductProps> = ({ setCart }) => {
+const Products: React.FC = () => {
   const [filtersVisible, setFiltersVisible] = useState<boolean>(false);
   const [filteredProducts, setFilteredProducts] = useState<ProductType[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(0);
@@ -54,11 +50,7 @@ const Products: React.FC<ProductProps> = ({ setCart }) => {
                 }`}
               >
                 {currentProducts.map((product) => (
-                  <Product
-                    setCart={setCart}
-                    key={product.id}
-                    product={product}
-                  />
+                  <Product key={product.id} product={product} />
                 ))}
               </div>
             </>

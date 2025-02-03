@@ -1,48 +1,14 @@
 import React from "react";
 import "./product.css";
 import { Product as ProductType } from "../types";
-import CartLinesAdd from "../../cart/queries/CartLinesAdd.gql";
-import { getStorefrontApiClient } from "../../api/storefront";
+import { useCart } from "../../cart/CartContext";
 
 interface ProductProps {
   product: ProductType;
-  setCart: React.Dispatch<React.SetStateAction<any>>;
 }
 
-const Product: React.FC<ProductProps> = ({ product, setCart }) => {
-  const client = getStorefrontApiClient();
-  const handleAddToCart = async () => {
-    if (!variant || product.totalInventory <= 0) return;
-
-    try {
-      const cartId = localStorage.getItem("cartId");
-      if (!cartId) {
-        return;
-      }
-
-      const response = await client.request(CartLinesAdd.loc.source.body, {
-        variables: {
-          cartId,
-          lines: [
-            {
-              merchandiseId: variant.id,
-              quantity: 1,
-              attributes: [
-                {
-                  key: "title",
-                  value: product.title,
-                },
-              ],
-            },
-          ],
-        },
-      });
-      console.log("Cart response after adding item:", response.data);
-      setCart(response.data.cartLinesAdd.cart);
-    } catch (error) {
-      console.error("Error adding item to cart:", error);
-    }
-  };
+const Product: React.FC<ProductProps> = ({ product }) => {
+  const { updateCart } = useCart();
   const { edges: variantEdges } = product.variants;
   const variant = variantEdges[0]?.node;
   const hasCompareAtPrice = variant?.compareAtPrice;
@@ -96,7 +62,7 @@ const Product: React.FC<ProductProps> = ({ product, setCart }) => {
         <div className="add-to-cart">
           <button
             className="add-to-cart-button"
-            onClick={handleAddToCart}
+            onClick={() => updateCart(variant.id, product.title)}
             disabled={!variant || product.totalInventory <= 0}
           >
             {product.totalInventory <= 0 ? "Out of Stock" : "Add to Cart"}
